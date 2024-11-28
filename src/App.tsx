@@ -17,8 +17,14 @@ export const goodsFromServer = [
   'Garlic',
 ];
 
+enum SortType {
+  None = '',
+  Alphabetically = 'sortAlphabetically',
+  ByLength = 'sortLength',
+}
+
 export const App: React.FC = () => {
-  const [sortField, setSortField] = useState('');
+  const [sortField, setSortField] = useState<SortType>(SortType.None);
   const [reversed, setReversed] = useState(false);
 
   const visibleGoods = [...goodsFromServer].sort((good1, good2) => {
@@ -37,7 +43,7 @@ export const App: React.FC = () => {
   }
 
   const resetGoods = () => {
-    setSortField('');
+    setSortField(SortType.None);
     setReversed(false);
   };
 
@@ -51,7 +57,7 @@ export const App: React.FC = () => {
               ? 'button is-info'
               : 'button is-info is-light'
           }
-          onClick={() => setSortField('sortAlphabetically')}
+          onClick={() => setSortField(SortType.Alphabetically)}
         >
           Sort alphabetically
         </button>
@@ -63,7 +69,7 @@ export const App: React.FC = () => {
               ? 'button is-success'
               : 'button is-success is-light'
           }
-          onClick={() => setSortField('sortLength')}
+          onClick={() => setSortField(SortType.ByLength)}
         >
           Sort by length
         </button>
@@ -90,13 +96,11 @@ export const App: React.FC = () => {
       </div>
 
       <ul>
-        <ul>
-          {visibleGoods.map(good => (
-            <li data-cy="Good" key={good}>
-              {good}
-            </li>
-          ))}
-        </ul>
+        {visibleGoods.map(good => (
+          <li data-cy="Good" key={good}>
+            {good}
+          </li>
+        ))}
       </ul>
     </div>
   );
